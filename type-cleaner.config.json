@@ -1,0 +1,118 @@
+{
+  "target": "src",
+  "rules": "all",
+  "exclude": ["node_modules", "dist", "build", ".git", "coverage", "src/generated"],
+  "extensions": [".ts", ".tsx"],
+  "dryRun": false,
+  "threshold": 0.8,
+  "enumStyle": "enum",
+  "preferInterface": true,
+  "sortMembers": false,
+  "sortUnionMembers": false,
+  "anyPolicy": "flag",
+  "report": true,
+  "reportPath": "type-cleaner-report.md",
+  "rules_config": {
+    "merge-declarations": {
+      "enabled": true
+    },
+    "dedup-identical": {
+      "enabled": true
+    },
+    "dedup-partial": {
+      "enabled": false,
+      "threshold": 0.8,
+      "minSharedProperties": 2
+    },
+    "dedup-imports": {
+      "enabled": true
+    },
+    "remove-optional-undefined": {
+      "enabled": true
+    },
+    "remove-null-undefined-strict": {
+      "enabled": false,
+      "requireConfirmation": true
+    },
+    "remove-never-union": {
+      "enabled": true
+    },
+    "remove-unknown-intersection": {
+      "enabled": true
+    },
+    "remove-duplicate-union-members": {
+      "enabled": true
+    },
+    "flatten-nested-unions": {
+      "enabled": true
+    },
+    "remove-noop-utility": {
+      "enabled": true
+    },
+    "remove-wrapper-types": {
+      "enabled": true
+    },
+    "remove-any-cast-chain": {
+      "enabled": false
+    },
+    "extract-enum": {
+      "enabled": true,
+      "minMembers": 3,
+      "minOccurrences": 2,
+      "style": "enum",
+      "requireConfirmation": true
+    },
+    "extract-inline-shape": {
+      "enabled": false,
+      "minOccurrences": 2
+    },
+    "extract-discriminated-union": {
+      "enabled": false,
+      "requireConfirmation": true
+    },
+    "normalise-interface-type": {
+      "enabled": true,
+      "prefer": "interface"
+    },
+    "normalise-array-type": {
+      "enabled": true,
+      "prefer": "shorthand"
+    },
+    "normalise-record-index": {
+      "enabled": false,
+      "prefer": "Record"
+    },
+    "normalise-function-type": {
+      "enabled": false,
+      "prefer": "arrow"
+    },
+    "remove-unused-types": {
+      "enabled": true,
+      "skipDeclarationFiles": true
+    },
+    "remove-unused-imports": {
+      "enabled": true
+    },
+    "flag-any": {
+      "enabled": true,
+      "policy": "flag",
+      "skipGenericConstraints": true
+    },
+    "flag-object-type": {
+      "enabled": true
+    },
+    "flag-circular": {
+      "enabled": false
+    },
+    "sort-members": {
+      "enabled": false,
+      "requiredFirst": true
+    },
+    "sort-union-members": {
+      "enabled": false
+    },
+    "sort-imports": {
+      "enabled": true
+    }
+  }
+}

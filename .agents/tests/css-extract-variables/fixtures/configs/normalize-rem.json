@@ -1,0 +1,9 @@
+{
+  "normalize": {
+    "spacing": {
+      "enabled": true,
+      "targetUnit": "rem",
+      "baseFontSize": 16
+    }
+  }
+}

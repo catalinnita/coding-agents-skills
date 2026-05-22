@@ -1,0 +1,7 @@
+/* color: #3a86ff; this should NOT be extracted */
+.btn {
+  /* padding: 8px; also safe */
+  color: red; /* inline comment: font-size: 14px; */
+  background: blue;
+  background: blue;
+}

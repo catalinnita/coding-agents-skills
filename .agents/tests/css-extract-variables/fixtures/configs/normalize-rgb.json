@@ -1,0 +1,8 @@
+{
+  "normalize": {
+    "colors": {
+      "enabled": true,
+      "targetFormat": "rgb"
+    }
+  }
+}

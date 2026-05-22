@@ -1,0 +1,26 @@
+{
+  "target": "src",
+  "exclude": ["node_modules", "dist", "build", ".git", "coverage", ".next", "out"],
+  "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs"],
+  "categories": "all",
+  "output": "config",
+  "envFile": ".env.example",
+  "configModule": "config/config.ts",
+  "flagsModule": "config/feature-flags.ts",
+  "constantsModule": "config/constants.ts",
+  "threshold": 2,
+  "dryRun": false,
+  "replace": true,
+  "framework": "auto",
+  "categories_config": {
+    "secrets": { "enabled": true, "minLength": 16 },
+    "urls": { "enabled": true },
+    "ports": { "enabled": true },
+    "feature-flags": { "enabled": true },
+    "timeouts": { "enabled": true },
+    "limits": { "enabled": true },
+    "paths": { "enabled": true },
+    "repeated": { "enabled": true, "threshold": 2 },
+    "magic-numbers": { "enabled": true }
+  }
+}

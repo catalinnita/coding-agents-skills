@@ -1,0 +1,10 @@
+{
+  "normalize": {
+    "transitions": {
+      "duration": {
+        "enabled": true,
+        "targetUnit": "ms"
+      }
+    }
+  }
+}

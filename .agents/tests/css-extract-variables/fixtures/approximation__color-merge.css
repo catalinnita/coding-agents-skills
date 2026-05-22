@@ -1,0 +1,5 @@
+/* These two blues are perceptually very close — should merge with tolerance=4 */
+.a { color: #3a86ff; color: #3a86ff; }
+.b { color: #3b87fe; color: #3b87fe; }
+/* This red is far from blue — should not merge */
+.c { color: #ff0000; color: #ff0000; }

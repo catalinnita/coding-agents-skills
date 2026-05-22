@@ -1,0 +1,10 @@
+{
+  "devLevel": "junior",
+  "outputFile": "CHANGES.md",
+  "skills": ["all"],
+  "includeLinks": true,
+  "includeCode": true,
+  "autoReport": false,
+  "append": false,
+  "groupBy": "skill"
+}

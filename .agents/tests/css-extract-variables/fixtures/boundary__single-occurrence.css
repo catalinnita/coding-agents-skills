@@ -1,0 +1,7 @@
+/* Every value appears exactly once — nothing should be extracted with threshold=2 */
+.btn {
+  color: #3a86ff;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}

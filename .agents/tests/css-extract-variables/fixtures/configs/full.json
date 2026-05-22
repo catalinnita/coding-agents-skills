@@ -1,0 +1,39 @@
+{
+  "prefix": "--brand",
+  "threshold": 2,
+  "dryRun": false,
+  "types": [
+    "colors",
+    "spacing",
+    "typography",
+    "radii",
+    "shadows",
+    "z-index",
+    "transitions"
+  ],
+  "normalize": {
+    "colors": {
+      "enabled": true,
+      "targetFormat": "hsl",
+      "precision": 2
+    },
+    "spacing": {
+      "enabled": true,
+      "targetUnit": "rem",
+      "baseFontSize": 16
+    }
+  },
+  "approximate": {
+    "colors": {
+      "enabled": true,
+      "tolerance": 4,
+      "strategy": "nearest"
+    },
+    "spacing": {
+      "enabled": true,
+      "mode": "grid",
+      "step": 4,
+      "unit": "px"
+    }
+  }
+}

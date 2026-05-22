@@ -1,0 +1,5 @@
+/* Already uses var() — a second pass must not modify this file */
+.btn {
+  color: var(--color-primary);
+  padding: var(--spacing-8px);
+}

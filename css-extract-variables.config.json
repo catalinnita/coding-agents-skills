@@ -1,0 +1,151 @@
+{
+  "target": "src/styles",
+  "output": "src/styles/variables.css",
+  "prefix": "--brand",
+  "threshold": 2,
+  "dryRun": false,
+  "types": ["colors", "spacing", "typography", "radii", "shadows", "z-index", "transitions"],
+  "exclude": ["node_modules", "dist", "build", ".git", "src/styles/vendor"],
+  "extensions": [".css", ".scss", ".module.css", ".module.scss"],
+  "scss": false,
+  "naming": {
+    "colors": "{prefix}-color-{slug}",
+    "spacing": "{prefix}-spacing-{value}",
+    "fontSize": "{prefix}-font-size-{value}",
+    "fontWeight": "{prefix}-font-weight-{value}",
+    "fontFamily": "{prefix}-font-family-{slug}",
+    "radius": "{prefix}-radius-{value}",
+    "shadow": "{prefix}-shadow-{slug}",
+    "zIndex": "{prefix}-z-{value}",
+    "duration": "{prefix}-duration-{value}",
+    "easing": "{prefix}-easing-{slug}"
+  },
+  "groups": {
+    "colors": {
+      "enabled": true,
+      "formats": ["hex", "rgb", "rgba", "hsl", "hsla", "named"],
+      "skip": ["currentColor", "inherit", "transparent"]
+    },
+    "spacing": {
+      "enabled": true,
+      "units": ["px", "rem", "em", "%", "vh", "vw", "ch"],
+      "properties": ["margin", "padding", "gap", "width", "height", "top", "right", "bottom", "left", "inset"]
+    },
+    "typography": {
+      "enabled": true,
+      "properties": ["font-size", "font-weight", "font-family", "line-height", "letter-spacing"]
+    },
+    "radii": {
+      "enabled": true,
+      "properties": ["border-radius"]
+    },
+    "shadows": {
+      "enabled": true,
+      "properties": ["box-shadow", "text-shadow"]
+    },
+    "zIndex": {
+      "enabled": true,
+      "properties": ["z-index"]
+    },
+    "transitions": {
+      "enabled": true,
+      "properties": ["transition-duration", "animation-duration", "transition-timing-function"]
+    }
+  },
+  "normalize": {
+    "colors": {
+      "enabled": true,
+      "targetFormat": "hsl",
+      "precision": 2
+    },
+    "spacing": {
+      "enabled": true,
+      "targetUnit": "rem",
+      "baseFontSize": 16,
+      "skipUnits": ["%", "vh", "vw", "ch", "ex"]
+    },
+    "typography": {
+      "fontSize": {
+        "enabled": true,
+        "targetUnit": "rem",
+        "baseFontSize": 16
+      },
+      "letterSpacing": {
+        "enabled": true,
+        "targetUnit": "em"
+      }
+    },
+    "radii": {
+      "enabled": true,
+      "targetUnit": "rem",
+      "baseFontSize": 16
+    },
+    "transitions": {
+      "duration": {
+        "enabled": true,
+        "targetUnit": "ms"
+      }
+    }
+  },
+  "approximate": {
+    "maxVariables": 50,
+    "maxIterations": 5,
+    "colors": {
+      "enabled": true,
+      "maxVariables": 12,
+      "tolerance": 4,
+      "alphaTolerance": 0.05,
+      "strategy": "nearest"
+    },
+    "spacing": {
+      "enabled": true,
+      "maxVariables": 10,
+      "mode": "grid",
+      "step": 4,
+      "unit": "px",
+      "roundingMode": "round",
+      "minValue": 4,
+      "maxValue": 128
+    },
+    "typography": {
+      "fontSize": {
+        "enabled": true,
+        "maxVariables": 8,
+        "mode": "scale",
+        "scaleBase": 16,
+        "scaleRatio": 1.25,
+        "roundDecimalPlaces": 2
+      },
+      "fontWeight": {
+        "enabled": true,
+        "snapToKeywords": true
+      }
+    },
+    "radii": {
+      "enabled": true,
+      "maxVariables": 6,
+      "mode": "custom",
+      "customScale": [0, 2, 4, 8, 12, 16, 24, 9999],
+      "unit": "px"
+    },
+    "transitions": {
+      "duration": {
+        "enabled": true,
+        "maxVariables": 5,
+        "mode": "grid",
+        "step": 50,
+        "unit": "ms"
+      }
+    }
+  },
+  "output_file": {
+    "groupByType": true,
+    "mergeExisting": true,
+    "selector": ":root"
+  },
+  "report": {
+    "showSkipped": true,
+    "showUnnamed": true,
+    "showPerFile": true
+  }
+}

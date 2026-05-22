@@ -1,0 +1,24 @@
+{
+  "outputDir": "_docs",
+  "sections": "all",
+  "baseUrl": "/",
+  "theme": "docs",
+  "diagramFormats": "excalidraw",
+  "dryRun": false,
+  "api": {
+    "sources": ["src/api", "src/routes", "app/api", "pages/api", "server"],
+    "includeTypes": true,
+    "includeExamples": true
+  },
+  "components": {
+    "sources": ["src/components", "components", "src/ui", "ui"],
+    "includeProps": true,
+    "includeExamples": true,
+    "includeStories": true
+  },
+  "diagrams": {
+    "dataFlow": true,
+    "stateManagement": true,
+    "outputFormat": "excalidraw"
+  }
+}

@@ -1,0 +1,203 @@
+---
+name: cucumber-scenarios
+description: >
+  Converts any form of acceptance criteria or informal scenario descriptions
+  into well-formed Gherkin-syntax scenario files, then validates them against
+  the codebase to ensure full coverage including edge cases and error paths.
+  Use when asked to generate cucumber scenarios, convert scenarios to Gherkin,
+  write BDD scenarios, validate scenario coverage, or create a scenarios md file.
+compatibility: >
+  Requires Python 3.10+. Optional code-path validation requires Node.js and
+  the project's step-definition runner (cucumber-js or vitest-cucumber).
+metadata:
+  author: the-morning-bell
+  version: "1.0"
+---
+
+## Overview
+
+Generate and validate Gherkin scenarios from acceptance criteria or informal
+descriptions. Detects whether input is already Gherkin and either converts or
+validates accordingly. Inspects `targetCode` to surface coverage gaps — missing
+error paths and boundary conditions — and marks them as `@generated` scenarios
+for human review.
+
+## Inputs
+
+| Input | Required | Description |
+|---|---|---|
+| `input` | Yes | Path to an AC file, scenarios file (any format), or raw pasted text |
+| `targetCode` | No | File glob or directory of the implementation — enables coverage validation |
+| `outputFile` | No | Where to write the Gherkin output. Default: `.tdd/scenarios.md` |
+| `language` | No | Spoken language for Gherkin keywords. Default: `en` |
+| `strict` | No | Fail if any scenario cannot be mapped to a code path. Default: `false` |
+
+## Step 1 — Detect input format
+
+```bash
+python3 .agents/skills/cucumber-scenarios/scripts/runner.py \
+  --mode detect \
+  --input <input> \
+  --project-dir <path-to-project>
+```
+
+| Detected format | Next action |
+|---|---|
+| Valid Gherkin (`Feature:`, `Scenario:`, `Given`/`When`/`Then` present) | Skip to Step 3 (validation only) |
+| Markdown with scenario-like headings or bullet lists | Convert in Step 2 |
+| Plain-text AC (user stories, JIRA prose) | Convert in Step 2 |
+| Mixture | Convert non-Gherkin sections; preserve existing Gherkin blocks |
+
+## Step 2 — Generate Gherkin scenarios
+
+```bash
+python3 .agents/skills/cucumber-scenarios/scripts/runner.py \
+  --mode generate \
+  --input <input> \
+  --project-dir <path-to-project>
+```
+
+**Mapping rules:**
+
+| Input construct | Gherkin output |
+|---|---|
+| Feature name / ticket title | `Feature:` block with `As a… I want… So that…` description |
+| Acceptance criterion | One or more `Scenario:` blocks |
+| Main / happy path | `Scenario:` with `Given / When / Then` steps |
+| Error condition / "should not" | `Scenario: … — error case` |
+| Parameterised cases ("for each X") | `Scenario Outline:` with `Examples:` table |
+| Shared precondition across scenarios | `Background:` block |
+| Tag hints ("admin only", "mobile") | `@admin`, `@mobile` scenario tags |
+
+**Step writing rules:**
+- `Given` — system state before the action (existing data, user logged in, feature flag on)
+- `When` — the single action under test
+- `Then` — one observable outcome per `Then` / `And` line
+- No implementation details in steps (no CSS selectors, function names, SQL)
+- Third-person present tense: "the user sees…", "the system returns…"
+
+After generating from the input, if `targetCode` is provided, run Step 3 immediately to add gap scenarios before writing the output file.
+
+## Step 3 — Validate coverage against code
+
+```bash
+python3 .agents/skills/cucumber-scenarios/scripts/runner.py \
+  --mode validate \
+  --input <outputFile-so-far> \
+  --target-code <targetCode> \
+  --project-dir <path-to-project>
+```
+
+For each scenario in the file:
+
+**Step resolution** — check whether a matching step definition exists in the project's step-definition files (`.step.ts`, `.steps.js`, `step_definitions/`, `support/`):
+- Found → `resolved`
+- Not found → `unresolved` (needs implementing)
+
+**Code path coverage** — map each `When` action to a function or route handler in `targetCode`:
+- Clear match → `resolved`
+- No match → gap
+
+**Gap detection** — scan `targetCode` for paths with no corresponding scenario:
+- Error states (network failure, validation error, 404) not in the AC
+- Boundary values (empty list, max-length string, zero quantity)
+- Auth / authorisation gates present in code but absent from AC
+- Any `if` / `switch` branch in the implementation with no scenario
+
+Add gap scenarios tagged `@generated` with a comment:
+```gherkin
+@generated
+# Generated: not in original AC — review before use
+Scenario: Checkout with empty cart
+  Given the cart is empty
+  When the user attempts to proceed to checkout
+  Then the user is redirected to the cart page
+```
+
+**Duplicate detection** — flag scenarios that are semantically identical (same `When` step and outcome) even if their text differs.
+
+## Step 4 — Write output file
+
+```bash
+python3 .agents/skills/cucumber-scenarios/scripts/runner.py \
+  --mode write \
+  --project-dir <path-to-project>
+```
+
+Write `outputFile` with a coverage comment at the top:
+
+```gherkin
+# Generated by cucumber-scenarios — 2026-05-22
+# Coverage: 8 scenarios | 6 resolved | 2 unresolved | 1 @generated
+
+Feature: Checkout
+  As a logged-in customer
+  I want to complete a purchase
+  So that I receive my order
+
+  Background:
+    Given the user is logged in
+    And the cart contains at least one item
+
+  Scenario: Successful checkout with card payment
+    When the user submits the order with valid card details
+    Then the order confirmation page is shown
+    And the order appears in the user's order history
+
+  Scenario: Checkout fails with expired card
+    When the user submits the order with an expired card
+    Then an error message "Your card has expired" is shown
+    And the cart is preserved
+
+  @generated
+  # Generated: not in original AC — review before use
+  Scenario: Checkout with empty cart
+    Given the cart is empty
+    When the user attempts to proceed to checkout
+    Then the user is redirected to the cart page
+```
+
+If input was already valid Gherkin and no changes were made, prepend the coverage comment and exit without modifying scenario content.
+
+## Convenience: run the full pipeline
+
+```bash
+python3 .agents/skills/cucumber-scenarios/scripts/runner.py \
+  --mode run \
+  --input <input> \
+  --target-code <targetCode> \
+  --output-file <outputFile> \
+  --project-dir <path-to-project>
+```
+
+Runs Steps 1–4 in sequence.
+
+## Available scripts
+
+- **`scripts/runner.py`** — main orchestrator. Run with `--help` for full usage.
+
+## Output structure
+
+```
+.tdd/
+  scenarios.md    ← Gherkin output with coverage comment
+```
+
+## Edge cases
+
+- **Input is a URL** (JIRA, Notion, Confluence): fetch page content and treat as plain-text AC; warn if authentication is required
+- **Multiple features in one input**: produce a single file with multiple `Feature:` blocks, or split into `<feature-name>.md` files — ask the user
+- **Parameterised steps with unknown values**: use descriptive placeholders in `Scenario Outline` tables (`<user_role>`, `<item_count>`); add a comment to fill them in
+- **Steps referencing UI details** ("clicks the Submit button"): warn and rephrase to be UI-agnostic ("submits the form")
+- **No `targetCode` provided**: skip Steps 3 coverage checks; run step-resolution only if step-definition files exist
+- **`strict: true` with unresolved scenarios**: exit non-zero and list every unresolved step
+- **Non-English Gherkin**: detect from `# language:` comment or `language` input; preserve the language in output
+
+## Success criteria
+
+- Output file is valid Gherkin parseable by `@cucumber/cucumber` or `cucumber-js`
+- Every acceptance criterion maps to at least one `Scenario`
+- Error paths and boundary conditions from `targetCode` are represented
+- `@generated` scenarios are clearly annotated and do not alter existing Gherkin blocks
+- No step descriptions contain implementation details
+- Coverage comment accurately reflects resolved vs unresolved step count

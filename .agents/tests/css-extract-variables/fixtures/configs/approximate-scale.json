@@ -1,0 +1,12 @@
+{
+  "approximate": {
+    "typography": {
+      "fontSize": {
+        "enabled": true,
+        "mode": "scale",
+        "scaleBase": 16,
+        "scaleRatio": 1.25
+      }
+    }
+  }
+}

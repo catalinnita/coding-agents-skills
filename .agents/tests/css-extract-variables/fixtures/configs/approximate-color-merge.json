@@ -1,0 +1,9 @@
+{
+  "approximate": {
+    "colors": {
+      "enabled": true,
+      "tolerance": 4,
+      "strategy": "nearest"
+    }
+  }
+}

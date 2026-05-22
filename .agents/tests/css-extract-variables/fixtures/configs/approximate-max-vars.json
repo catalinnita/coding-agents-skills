@@ -1,0 +1,10 @@
+{
+  "approximate": {
+    "colors": {
+      "enabled": true,
+      "tolerance": 2,
+      "maxVariables": 2,
+      "maxIterations": 3
+    }
+  }
+}

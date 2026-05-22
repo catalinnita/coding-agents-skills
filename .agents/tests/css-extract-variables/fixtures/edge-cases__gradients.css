@@ -1,0 +1,5 @@
+/* gradient repeated — should extract as one variable */
+.a { background: linear-gradient(to right, #3a86ff, #ff006e); }
+.b { background: linear-gradient(to right, #3a86ff, #ff006e); }
+/* gradient not repeated — should not extract */
+.c { background: linear-gradient(to bottom, #fff, #000); }

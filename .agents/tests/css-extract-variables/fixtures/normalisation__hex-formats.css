@@ -1,0 +1,8 @@
+/* 3-digit, 6-digit, 8-digit (alpha), rgb, rgba, hsl, named */
+.a { color: #fff; color: #fff; }
+.b { color: #ffffff; color: #ffffff; }
+.c { color: #ffffff80; color: #ffffff80; }
+.d { color: rgb(255,0,0); color: rgb(255,0,0); }
+.e { color: rgba(0,0,0,0.5); color: rgba(0,0,0,0.5); }
+.f { color: hsl(200,100%,50%); color: hsl(200,100%,50%); }
+.g { color: red; color: red; }

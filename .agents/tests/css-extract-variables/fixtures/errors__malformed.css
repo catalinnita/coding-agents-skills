@@ -1,0 +1,5 @@
+/* Unclosed block */
+.btn {
+  color: #3a86ff;
+/* missing closing brace */
+.card { padding: 8px; padding: 8px; }

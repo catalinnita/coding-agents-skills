@@ -1,0 +1,10 @@
+{
+  "approximate": {
+    "spacing": {
+      "enabled": true,
+      "mode": "grid",
+      "step": 4,
+      "unit": "px"
+    }
+  }
+}

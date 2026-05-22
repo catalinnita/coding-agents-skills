@@ -1,0 +1,61 @@
+{
+  "outputDir": ".performance",
+
+  "lighthouse": {
+    "urls": ["http://localhost:3000"],
+    "viewport": {
+      "width": 1440,
+      "height": 900,
+      "deviceScaleFactor": 1,
+      "mobile": false
+    },
+    "throttling": "simulated3G",
+    "categories": ["performance"],
+    "iterations": 3,
+    "historyDir": ".performance/history/lighthouse",
+    "thresholds": {
+      "performance": 90,
+      "lcp": 2500,
+      "fcp": 1800,
+      "ttfb": 800,
+      "cls": 0.1,
+      "fid": 100,
+      "inp": 200
+    },
+    "extraFlags": []
+  },
+
+  "bundleSizes": {
+    "buildCommand": null,
+    "buildOutputDir": null,
+    "historyDir": ".performance/history/bundle",
+    "thresholds": {
+      "totalJs": 500000,
+      "totalCss": 100000,
+      "totalAssets": 1500000,
+      "largestChunk": 200000,
+      "perFile": {}
+    },
+    "include": ["js", "css", "images", "fonts", "other"],
+    "exclude": ["*.map"],
+    "gzip": true,
+    "brotli": false
+  },
+
+  "pageRender": {
+    "urls": ["http://localhost:3000"],
+    "iterations": 5,
+    "warmupRequests": 2,
+    "historyDir": ".performance/history/render",
+    "thresholds": {
+      "renderTime": 500,
+      "ttfb": 200,
+      "originRequests": 10,
+      "totalRequests": 50
+    },
+    "headers": {},
+    "waitForSelector": null,
+    "serveCommand": null,
+    "port": 3000
+  }
+}

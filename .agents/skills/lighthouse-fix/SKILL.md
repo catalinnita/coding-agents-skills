@@ -14,7 +14,7 @@ compatibility: >
   automatically if missing). The lighthouse-tests skill must have run at least
   once so a raw result file exists.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

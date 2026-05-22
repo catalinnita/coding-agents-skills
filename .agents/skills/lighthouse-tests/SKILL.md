@@ -11,7 +11,7 @@ compatibility: >
   automatically if missing). Requires Chrome or Chromium on PATH or via
   CHROME_PATH.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

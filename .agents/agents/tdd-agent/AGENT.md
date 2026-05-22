@@ -21,7 +21,7 @@ skills:
   - global-mocks
   - coverage-gaps
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

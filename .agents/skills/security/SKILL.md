@@ -12,7 +12,7 @@ compatibility: >
   manager CLI (npm, pip-audit, bundle-audit, govulncheck, etc.). Header checks
   require Node.js and Playwright when run against a live server.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

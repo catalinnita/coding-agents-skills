@@ -11,7 +11,7 @@ compatibility: >
   Requires Python 3.10+. Config updates require Jest or Vitest. MSW server
   wiring requires msw >= 1.0 installed in the project.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

@@ -4,7 +4,7 @@ description: >
   Scans all CSS/SCSS files in a repo, extracts hardcoded values (colors, spacing, typography, radii, shadows, z-index, transitions) into CSS custom properties, and replaces every occurrence with a variable reference. Supports format and unit normalization, perceptual color merging, grid and scale snapping to keep variable counts below a configurable cap, and dry-run mode. Use when asked to extract CSS variables, replace hardcoded values with CSS vars, refactor CSS to use custom properties, or tokenize CSS design values.
 compatibility: Requires Python 3.10+. Colour distance requires the `colormath` package (installed automatically via PEP 723 inline metadata in the script).
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.1"
 ---
 

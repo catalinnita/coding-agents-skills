@@ -11,7 +11,7 @@ compatibility: >
   PEP 723 inline metadata). The target project must be a git repository with a
   build/serve command that can run in a cloned worktree.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

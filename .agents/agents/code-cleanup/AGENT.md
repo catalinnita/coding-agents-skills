@@ -27,7 +27,7 @@ skills:
 agents:
   - css-refactor
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

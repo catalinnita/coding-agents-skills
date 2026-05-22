@@ -10,7 +10,7 @@ compatibility: >
   Requires Python 3.10+. Optional code-path validation requires Node.js and
   the project's step-definition runner (cucumber-js or vitest-cucumber).
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

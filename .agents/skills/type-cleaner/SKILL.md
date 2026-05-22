@@ -8,7 +8,7 @@ description: >
   declarations, or remove redundant type rules like ? and undefined.
 compatibility: Requires Node.js 18+. Installs ts-morph automatically on first run.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

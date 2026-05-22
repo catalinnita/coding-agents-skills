@@ -16,7 +16,7 @@ skills:
   - lighthouse-tests
   - page-render
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.1"
 ---
 

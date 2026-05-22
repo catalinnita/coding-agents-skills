@@ -11,7 +11,7 @@ compatibility: >
   Requires Python 3.10+, Node.js, and Playwright (installed automatically via
   PEP 723 inline metadata). Chromium browser installed via playwright install.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

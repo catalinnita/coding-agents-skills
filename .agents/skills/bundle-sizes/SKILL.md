@@ -10,7 +10,7 @@ compatibility: >
   Requires Python 3.10+ and Node.js. Build toolchain (Next.js, Vite, CRA, etc.)
   must be installed in the project.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

@@ -8,7 +8,7 @@ description: >
   skill.
 compatibility: Requires Python 3.10+. Generated tests use pytest. Node-based skills generate Jest tests.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

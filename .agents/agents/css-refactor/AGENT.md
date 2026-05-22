@@ -18,7 +18,7 @@ skills:
   - visual-regression
   - changes-report
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

@@ -11,7 +11,7 @@ compatibility: >
   Requires Python 3.10+. File normalisation requires the project's test runner
   (Jest or Vitest) to verify files still pass after changes.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

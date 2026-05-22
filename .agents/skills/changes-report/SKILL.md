@@ -11,7 +11,7 @@ compatibility: >
   Requires Python 3.10+. Reads report JSON/MD files written by other skills.
   Git must be available for fallback change detection.
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

@@ -10,7 +10,7 @@ compatibility: >
   Requires Python 3.10+ and Node.js. The project must have Jest or Vitest with
   a coverage provider installed (@vitest/coverage-v8 or equivalent).
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

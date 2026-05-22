@@ -10,7 +10,7 @@ compatibility: >
   Requires Python 3.10+. Runtime analysis requires Node.js and Playwright
   (installed automatically via PEP 723 inline metadata).
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

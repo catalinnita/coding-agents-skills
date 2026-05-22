@@ -7,7 +7,7 @@ description: >
   optional scripts/ stub, and validates the result with skills-ref.
 compatibility: Requires Python 3.8+. Validation requires Node.js (npx skills-ref).
 metadata:
-  author: the-morning-bell
+  author: catalin nita
   version: "1.0"
 ---
 

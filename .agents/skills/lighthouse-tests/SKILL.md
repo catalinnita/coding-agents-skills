@@ -56,6 +56,7 @@ python3 .agents/skills/lighthouse-tests/scripts/runner.py \
 - Confirm Chrome: try `CHROME_PATH`, then `google-chrome`, `chromium`, `chromium-browser`; fail with a helpful message if none found
 - For each URL: verify HTTP 2xx response; warn and continue for unreachable URLs
 - Create `historyDir` if it doesn't exist
+- Ensure `outputDir` (default `.performance/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Run audits
 

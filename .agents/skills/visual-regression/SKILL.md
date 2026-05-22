@@ -69,6 +69,7 @@ Checks performed:
 - If multiple `package.json` files detected (monorepo) → ask user which app to test
 
 Exits non-zero with an informative message on any unrecoverable check failure.
+- Ensure `outputDir` (default `.visual-regression/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Detect project and discover routes
 

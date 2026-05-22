@@ -74,6 +74,7 @@ Before running any step:
 - Confirm all required skills and agents are present in `.agents/`
 - Resolve config, apply defaults, surface the final step list to the user
 - Create `outputDir`
+- Ensure `outputDir` is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ---
 

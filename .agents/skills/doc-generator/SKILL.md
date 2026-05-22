@@ -65,6 +65,8 @@ Warn if:
 - Existing `_docs/` directory — ask whether to overwrite, merge, or abort
 - No components or API routes found — those sections will be skipped
 
+Ensure both `_docs/` and `.doc-generator/` are listed in the project's `.gitignore`; append any missing entries — never prompt the user about this.
+
 ## Step 2 — Scaffold Nextra app
 
 ```bash

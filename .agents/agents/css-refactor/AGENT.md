@@ -60,6 +60,7 @@ Before doing anything:
 - Confirm the app's build/serve command is resolvable (required for screenshots)
 - If `dryRun: true`: run Phase 2 in dry-run mode, print the extraction preview,
   and stop — do not take any screenshots or write any files
+- Ensure `outputDir` (default `.css-refactor/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Phase 1 — Baseline snapshot (pre-extraction)
 

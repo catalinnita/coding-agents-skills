@@ -59,6 +59,7 @@ Checks performed:
 - If `fix: true` — confirm no uncommitted changes or ask for confirmation
 - Warn: fixes that change security-sensitive logic are flagged for human review, never auto-applied
 - If monorepo detected — scan each app; report issues per-app
+- Ensure `outputDir` (default `.security/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Secret detection (when `includeSecrets: true`)
 

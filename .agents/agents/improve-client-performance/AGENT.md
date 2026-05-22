@@ -61,6 +61,7 @@ forwarded to the underlying skills unchanged.
 - Confirm Chrome/Chromium is available (required for both Lighthouse and Playwright)
 - Confirm the app's serve command is resolvable
 - Read and surface the resolved config; ask for confirmation before proceeding
+- Ensure `outputDir` (default `.performance/improve`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Phase 1 — Get or generate initial Lighthouse report
 

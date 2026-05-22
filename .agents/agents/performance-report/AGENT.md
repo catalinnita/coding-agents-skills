@@ -50,6 +50,7 @@ Optional CLI overrides:
   - `lighthouse-tests`: enabled if `lighthouse.urls` is non-empty
   - `page-render`: enabled if `pageRender.urls` is non-empty
 - Warn about any disabled measurement and explain why
+- Ensure `outputDir` is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Phase 1 — Bundle Sizes
 

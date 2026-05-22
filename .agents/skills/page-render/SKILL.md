@@ -63,6 +63,7 @@ python3 .agents/skills/page-render/scripts/runner.py \
 - Verify Playwright + Chromium: `python3 -m playwright --version`; install if missing: `playwright install chromium`
 - Confirm `historyDir` is writable; create if it doesn't exist
 - Verify each URL responds with HTTP 2xx; warn and continue for unreachable URLs
+- Ensure `outputDir` (default `.performance/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Warm up the server
 

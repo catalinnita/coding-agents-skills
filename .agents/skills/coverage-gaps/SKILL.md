@@ -61,6 +61,7 @@ Confirm coverage provider is installed:
 - Jest: built-in (no extra package needed)
 
 If coverage provider is missing, print the install command and exit.
+- Ensure `outputDir` (default `.tdd/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Run coverage
 

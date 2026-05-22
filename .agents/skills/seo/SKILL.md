@@ -58,6 +58,7 @@ Checks performed:
 - If `fix: true` — confirm no uncommitted changes or ask for confirmation
 - If `baseUrl` not provided — warn that canonical URL and sitemap checks will be skipped
 - If monorepo detected — ask which app to audit
+- Ensure `outputDir` (default `.seo/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Static analysis
 

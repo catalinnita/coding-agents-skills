@@ -60,6 +60,7 @@ Auto-detect build command and output dir if not configured:
 | `scripts.build` in `package.json` | value of `scripts.build` | `dist` |
 
 Warn if source maps are not enabled (size analysis less accurate without them).
+- Ensure `outputDir` (default `.performance/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Build
 

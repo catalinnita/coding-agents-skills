@@ -59,6 +59,7 @@ Before doing anything:
   - `acceptanceCriteria` or `scenariosFile` provided → **Scenario mode** (standard flow)
   - Both provided → use scenario mode; surface coverage gaps as a secondary report after Phase 6
 - If both `acceptanceCriteria` and `scenariosFile` are provided: use `scenariosFile` as canonical; treat `acceptanceCriteria` as supplementary context only
+- Ensure `outputDir` (default `.tdd/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Phase 2 — Generate or validate Gherkin scenarios *(Scenario mode only)*
 

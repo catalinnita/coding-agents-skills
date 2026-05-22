@@ -1,1 +1,3 @@
 _spec
+apps/
+.DS_store

@@ -43,6 +43,8 @@ a developer.
 Config is read from `performance.config.json` under the key `lighthousefix`,
 or from `.lighthousefix.config.json` at the project root.
 
+Before doing anything, ensure `outputDir` (default `.performance/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this.
+
 ## Step 1 — Locate the latest Lighthouse results
 
 ```bash

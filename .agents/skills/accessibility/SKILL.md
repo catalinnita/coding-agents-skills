@@ -55,6 +55,7 @@ Checks performed:
 - If `fix: true` — confirm no uncommitted changes or ask for confirmation
 - If `includeRuntime: true` — verify Playwright is available (`python3 -m playwright --version`); install if missing: `playwright install chromium`
 - If multiple `package.json` files detected (monorepo) — ask user which app to audit
+- Ensure `outputDir` (default `.accessibility/`) is listed in the project's `.gitignore`; append it if missing — never prompt the user about this
 
 ## Step 2 — Static analysis
 

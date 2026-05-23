@@ -9,7 +9,7 @@ description: >
 compatibility: Requires Node.js 18+. Installs ts-morph automatically on first run.
 metadata:
   author: catalin nita
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Overview
@@ -75,17 +75,20 @@ node .agents/skills/doc-generator/scripts/generator.js \
   --project-dir <path>
 ```
 
-Creates the Nextra app skeleton in `_docs/`:
+Creates the Nextra v3 app skeleton in `_docs/`:
 
 ```
 _docs/
-  package.json          ← next + nextra + nextra-theme-docs
+  package.json          ← next@15 + nextra@3 + nextra-theme-docs@3
   next.config.mjs       ← nextra() wrapper
-  theme.config.tsx      ← logo, project link, footer
+  mdx-components.tsx    ← MDX component bridge
   tsconfig.json
   .gitignore
-  pages/
-    _app.mdx
+  app/
+    layout.tsx          ← root layout with Navbar + Layout
+    [[...mdxPath]]/
+      page.tsx          ← catch-all MDX page handler
+  content/
     index.mdx           ← landing page with project overview
     getting-started/
     scripts/
@@ -237,11 +240,14 @@ Runs Steps 1–5 in sequence.
 _docs/
   package.json
   next.config.mjs
-  theme.config.tsx
+  mdx-components.tsx
   tsconfig.json
   .gitignore
-  pages/
-    _app.mdx
+  app/
+    layout.tsx
+    [[...mdxPath]]/
+      page.tsx
+  content/
     index.mdx
     _meta.json
     getting-started/

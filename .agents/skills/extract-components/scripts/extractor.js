@@ -1085,6 +1085,11 @@ async function run() {
     console.error('\nPlease fix TypeScript errors before committing.\n');
   }
 
+  // Step 8b — Consistency check: find components in src/components/ that are
+  // used in some files but not in others that contain semantically equivalent
+  // inline markup (e.g. a CSS-only spinner where <LoadingState /> is expected).
+  checkConsistency(sourceFiles);
+
   // Step 9 — Report
   console.log('\nextract-components — done\n');
   console.log(`Patterns extracted: ${extractedComponents.length}\n`);
@@ -1096,6 +1101,87 @@ async function run() {
     console.log(`    Lines in source: ${comp.linesRemoved}`);
     console.log();
   }
+}
+
+// ---------------------------------------------------------------------------
+// Step 8b — Consistency check
+// ---------------------------------------------------------------------------
+
+/**
+ * For each component in outputDir, find files that import it and files that
+ * don't — then check whether non-importing files contain inline markup that
+ * looks semantically equivalent (same root tag + overlapping className tokens).
+ * Reports suspects so the developer can decide whether to replace them.
+ */
+function checkConsistency(sourceFiles) {
+  const absOutputDir = path.resolve(PROJECT_DIR, OUTPUT_DIR);
+  if (!fs.existsSync(absOutputDir)) return;
+
+  const componentFiles = fs.readdirSync(absOutputDir)
+    .filter(f => f.endsWith('.tsx') && !f.includes('.test.'))
+    .map(f => ({
+      name: f.replace('.tsx', ''),
+      path: path.join(absOutputDir, f),
+      src: fs.readFileSync(path.join(absOutputDir, f), 'utf8'),
+    }));
+
+  if (componentFiles.length === 0) return;
+
+  const suspects = [];
+
+  for (const comp of componentFiles) {
+    // Extract the root tag and significant className tokens from the component body
+    const rootTagMatch = comp.src.match(/return \(\s*\n?\s*<(\w+)/);
+    if (!rootTagMatch) continue;
+    const rootTag = rootTagMatch[1];
+
+    // Collect className values from the component
+    const classNames = [...comp.src.matchAll(/className="([^"]+)"/g)].map(m => m[1]);
+    if (classNames.length === 0) continue;
+
+    // Significant tokens: words longer than 3 chars, not utility prefixes
+    const sigTokens = classNames.flatMap(cn =>
+      cn.split(/\s+/).filter(t => t.length > 3 && !t.match(/^(dark|hover|focus|active|group|peer|sm:|md:|lg:)/) )
+    ).slice(0, 5); // top 5 most distinctive tokens
+
+    if (sigTokens.length === 0) continue;
+
+    // Files that already import this component
+    const importers = new Set(
+      sourceFiles
+        .filter(sf => sf.getFullText().includes(`from`) && sf.getFullText().includes(`'${comp.name}'`) || sf.getFullText().includes(`"${comp.name}"`))
+        .map(sf => sf.getFilePath())
+    );
+
+    // Check non-importing files for inline markup with the same root tag + tokens
+    for (const sf of sourceFiles) {
+      const filePath = sf.getFilePath();
+      if (importers.has(filePath)) continue;
+      if (filePath.includes(absOutputDir)) continue;
+
+      const text = sf.getFullText();
+      if (!text.includes(`<${rootTag}`) && !text.includes(`<${rootTag.toLowerCase()}`)) continue;
+
+      // Check if any significant className token appears in the file
+      const matchingTokens = sigTokens.filter(t => text.includes(t));
+      if (matchingTokens.length >= Math.min(2, sigTokens.length)) {
+        suspects.push({
+          component: comp.name,
+          file: path.relative(PROJECT_DIR, filePath),
+          tokens: matchingTokens,
+        });
+      }
+    }
+  }
+
+  if (suspects.length === 0) return;
+
+  console.log('\n⚠  Consistency warnings — possible missed usages:\n');
+  for (const s of suspects) {
+    console.log(`  ${s.file}`);
+    console.log(`    May have inline markup that should use <${s.component} /> (matched: ${s.tokens.join(', ')})`);
+  }
+  console.log();
 }
 
 // ---------------------------------------------------------------------------

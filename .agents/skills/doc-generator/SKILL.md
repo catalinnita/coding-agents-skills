@@ -75,15 +75,18 @@ node .agents/skills/doc-generator/scripts/generator.js \
   --project-dir <path>
 ```
 
-Creates the Nextra v3 app skeleton in `_docs/`:
+Creates the Nextra v4 app skeleton in `_docs/`:
 
 ```
 _docs/
-  package.json          ← next@15 + nextra@3 + nextra-theme-docs@3
-  next.config.mjs       ← nextra() wrapper
+  package.json          ← next@15 + nextra@4 + nextra-theme-docs@4 + patch-package
+  next.config.mjs       ← nextra({}) wrapper with pageExtensions
+  postcss.config.mjs    ← @tailwindcss/postcss (required by nextra-theme-docs v4)
   mdx-components.tsx    ← MDX component bridge
   tsconfig.json
   .gitignore
+  patches/
+    nextra-theme-docs+4.6.1.patch  ← fixes Zod children nonoptional bug
   app/
     layout.tsx          ← root layout with Navbar + Layout
     [[...mdxPath]]/
@@ -116,7 +119,7 @@ Pages: `getting-started/index.mdx`, `installation.mdx`, `configuration.mdx`
 
 - **Overview** — project description + framework detected
 - **Prerequisites** — Node version from `engines.node`, package manager, env vars
-- **Installation** — clone → install → configure steps, with tabs per package manager
+- **Installation** — clone → install → configure steps, with `<Tabs>`/`<Tabs.Tab>` per package manager (nextra v4 API)
 - **Running locally** — the `dev` or `start` script
 - **Running tests** — the `test` script
 - **Configuration** — table of every key in `.env.example` (key, required/optional, description from inline comment)
@@ -240,29 +243,32 @@ Runs Steps 1–5 in sequence.
 _docs/
   package.json
   next.config.mjs
+  postcss.config.mjs
   mdx-components.tsx
   tsconfig.json
   .gitignore
+  patches/
+    nextra-theme-docs+4.6.1.patch
   app/
     layout.tsx
     [[...mdxPath]]/
       page.tsx
   content/
     index.mdx
-    _meta.json
+    _meta.js
     getting-started/
-      _meta.json
+      _meta.js
       index.mdx
       installation.mdx
       configuration.mdx
     scripts/
       index.mdx
     api/
-      _meta.json
+      _meta.js
       index.mdx
       <route-group>.mdx    ← one per group
     components/
-      _meta.json
+      _meta.js
       index.mdx
       <ComponentName>.mdx  ← one per component
   public/

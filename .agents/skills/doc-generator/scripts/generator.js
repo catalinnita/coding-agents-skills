@@ -545,11 +545,17 @@ function cmdScaffold(cfg, projectDir, analysis) {
     name: `${pkg.name || 'project'}-docs`,
     version: '0.1.0',
     private: true,
-    scripts: { dev: 'next dev --port 3001', build: 'next build', start: 'next start' },
+    scripts: {
+      postinstall: 'patch-package',
+      dev: 'next dev --port 3001',
+      build: 'next build',
+      start: 'next start',
+    },
     dependencies: {
+      '@tailwindcss/postcss': '^4.0.0',
       next: '^15.0.0',
-      nextra: '^3.0.0',
-      'nextra-theme-docs': '^3.0.0',
+      nextra: '^4.0.0',
+      'nextra-theme-docs': '^4.0.0',
       react: '^18.3.0',
       'react-dom': '^18.3.0',
     },
@@ -557,6 +563,7 @@ function cmdScaffold(cfg, projectDir, analysis) {
       '@types/node': '^20',
       '@types/react': '^18',
       '@types/react-dom': '^18',
+      'patch-package': '^8.0.0',
       typescript: '^5',
     },
   }, null, 2));
@@ -564,9 +571,40 @@ function cmdScaffold(cfg, projectDir, analysis) {
   // next.config.mjs
   writeFile(path.join(od, 'next.config.mjs'), `import nextra from 'nextra'
 
-const withNextra = nextra()
+const withNextra = nextra({})
 
-export default withNextra({})
+export default withNextra({
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+})
+`);
+
+  // postcss.config.mjs — required by nextra-theme-docs v4 (uses @tailwindcss/postcss)
+  writeFile(path.join(od, 'postcss.config.mjs'), `const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+`);
+
+  // patches/nextra-theme-docs+4.6.1.patch
+  // nextra-theme-docs 4.6.1 bug: LayoutPropsSchema requires children as nonoptional,
+  // but the Layout component destructures children out before calling safeParse(themeConfig),
+  // so Zod v4 rejects the missing key. Making it optional matches the actual usage.
+  writeFile(path.join(od, 'patches', 'nextra-theme-docs+4.6.1.patch'), `diff --git a/node_modules/nextra-theme-docs/dist/schemas.js b/node_modules/nextra-theme-docs/dist/schemas.js
+index 060d0b9..f17054e 100644
+--- a/node_modules/nextra-theme-docs/dist/schemas.js
++++ b/node_modules/nextra-theme-docs/dist/schemas.js
+@@ -65,7 +65,7 @@ const LayoutPropsSchema = z.strictObject({
+   banner: reactNode.optional().meta({
+     description: "Rendered [\`<Banner>\` component](/docs/built-ins/banner). E.g. \`<Banner {...bannerProps} />\`"
+   }),
+-  children: reactNode,
++  children: reactNode.optional(),
+   copyPageButton: z.boolean().default(true).meta({
+     description: "Hide/show copy page content button."
+   }),
 `);
 
   // app/layout.tsx
@@ -608,9 +646,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 `);
 
   // app/[[...mdxPath]]/page.tsx
+  // getMDXComponents is an alias to avoid the react-hooks/rules-of-hooks false positive
+  // (the function starts with 'use' but is not a React hook).
+  // Wrapper is resolved inside the async Page component for the same reason.
+  // sourceCode is required by nextra-theme-docs v4's wrapper component.
   fs.mkdirSync(path.join(od, 'app', '[[...mdxPath]]'), { recursive: true });
-  writeFile(path.join(od, 'app', '[[...mdxPath]]', 'page.tsx'), `import { generateStaticParamsFor, importPage } from 'nextra/pages'
-import { useMDXComponents } from '../../mdx-components'
+  writeFile(path.join(od, 'app', '[[...mdxPath]]', 'page.tsx'), `import type { ComponentType, ReactNode } from 'react'
+import { generateStaticParamsFor, importPage } from 'nextra/pages'
+import { useMDXComponents as getMDXComponents } from '../../mdx-components'
 
 export const generateStaticParams = generateStaticParamsFor('mdxPath')
 
@@ -620,14 +663,16 @@ export async function generateMetadata(props: { params: Promise<{ mdxPath?: stri
   return metadata
 }
 
-const Wrapper = useMDXComponents().wrapper
+type WrapperProps = { toc: unknown; metadata: unknown; sourceCode: string; children: ReactNode }
 
 export default async function Page(props: { params: Promise<{ mdxPath?: string[] }> }) {
   const params = await props.params
   const result = await importPage(params.mdxPath)
-  const { default: MDXContent, toc, metadata } = result
+  const { default: MDXContent, toc, metadata, sourceCode } = result
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const Wrapper = (getMDXComponents() as any).wrapper as ComponentType<WrapperProps>
   return (
-    <Wrapper toc={toc} metadata={metadata}>
+    <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
       <MDXContent {...props} params={params} />
     </Wrapper>
   )
@@ -635,9 +680,11 @@ export default async function Page(props: { params: Promise<{ mdxPath?: string[]
 `);
 
   // mdx-components.tsx
+  // 'any' param avoids nextra's NestedMDXComponents type incompatibility with {}
   writeFile(path.join(od, 'mdx-components.tsx'), `import { useMDXComponents as getDocsMDXComponents } from 'nextra-theme-docs'
 
-export function useMDXComponents(components?: object) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useMDXComponents(components: any = {}) {
   return getDocsMDXComponents(components)
 }
 `);
@@ -659,14 +706,15 @@ export function useMDXComponents(components?: object) {
   // .gitignore
   writeFile(path.join(od, '.gitignore'), `node_modules\n.next\nout\n`);
 
-  // Root _meta.json
-  writeFile(path.join(od, 'content', '_meta.json'), JSON.stringify({
-    index: 'Introduction',
-    'getting-started': 'Getting Started',
-    scripts: 'Scripts',
-    api: 'API Reference',
-    components: 'Components',
-  }, null, 2));
+  // Root _meta.js — nextra v4 uses JS module format (not JSON)
+  writeFile(path.join(od, 'content', '_meta.js'), `export default {
+  index: 'Introduction',
+  'getting-started': 'Getting Started',
+  scripts: 'Scripts',
+  api: 'API Reference',
+  components: 'Components',
+}
+`);
 
   // Landing page
   writeFile(path.join(od, 'content', 'index.mdx'), `# ${title}
@@ -721,12 +769,13 @@ function generateGettingStarted(analysis, od) {
   const testCmd = pkg.scripts?.test ? `${pm === 'npm' ? 'npm run' : pm} test` : null;
   const nodeReq = pkg.engines?.node ? `Node.js ${pkg.engines.node}` : 'Node.js 18+';
 
-  // _meta.json
-  writeFile(path.join(od, 'content', 'getting-started', '_meta.json'), JSON.stringify({
-    index: 'Overview',
-    installation: 'Installation',
-    configuration: 'Configuration',
-  }, null, 2));
+  // _meta.js — nextra v4 uses JS module format
+  writeFile(path.join(od, 'content', 'getting-started', '_meta.js'), `export default {
+  index: 'Overview',
+  installation: 'Installation',
+  configuration: 'Configuration',
+}
+`);
 
   // index.mdx
   writeFile(path.join(od, 'content','getting-started', 'index.mdx'), `# Getting Started
@@ -768,24 +817,24 @@ ${pkg.engines ? Object.entries(pkg.engines).filter(([k]) => k !== 'node').map(([
 
 ## Install
 
-import { Tabs, Tab } from 'nextra/components'
+import { Tabs } from 'nextra/components'
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tab>
+  <Tabs.Tab>
     \`\`\`bash
     npm install
     \`\`\`
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
     \`\`\`bash
     yarn
     \`\`\`
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
     \`\`\`bash
     pnpm install
     \`\`\`
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 ${installationContent ? `\n## Additional Steps\n\n${installationContent}` : ''}
 `);
@@ -909,9 +958,10 @@ function generateApi(analysis, od) {
     groups[group].push(route);
   });
 
-  // _meta.json
+  // _meta.js — nextra v4 uses JS module format
   const meta = { index: 'Overview', ...Object.fromEntries(Object.keys(groups).map(g => [g, `/${g}`])) };
-  writeFile(path.join(od, 'content','api', '_meta.json'), JSON.stringify(meta, null, 2));
+  writeFile(path.join(od, 'content', 'api', '_meta.js'),
+    `export default ${JSON.stringify(meta, null, 2)}\n`);
 
   // Overview page
   const allRoutes = apiRoutes.map(r => `| \`${r.method}\` | \`${r.path}\` |`).join('\n');
@@ -960,12 +1010,13 @@ function generateComponents(analysis, od, components) {
     return;
   }
 
-  // _meta.json
+  // _meta.js — nextra v4 uses JS module format
   const meta = { index: 'Overview' };
   const useIndex = components.length > 50;
 
   components.forEach(c => { meta[slugify(c.name)] = c.name; });
-  writeFile(path.join(od, 'content','components', '_meta.json'), JSON.stringify(meta, null, 2));
+  writeFile(path.join(od, 'content', 'components', '_meta.js'),
+    `export default ${JSON.stringify(meta, null, 2)}\n`);
 
   // Overview
   const componentList = components.map(c =>

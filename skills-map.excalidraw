@@ -786,11 +786,11 @@
       "strokeWidth":1, "strokeStyle":"solid", "roughness":0, "opacity":100,
       "groupIds":[], "frameId":null, "roundness":null, "seed":161, "version":1, "versionNonce":161,
       "isDeleted":false, "boundElements":null, "updated":1716378120000, "link":null, "locked":false,
-      "text":"Blue=tdd-agent  Teal=code-cleanup  Purple=css-refactor  Pink=component-refactor  Amber=performance-report  Orange=improve-client-performance  Dashed=feeds/agent-to-agent  ←·· reads all",
+      "text":"Blue=tdd-agent  Teal=code-cleanup  Purple=css-refactor  Pink=component-refactor  Red=npm-vulnerability-fix  Amber=performance-report  Orange=improve-client-performance  Dashed=feeds/agent-to-agent  ←·· reads all",
       "fontSize":11, "fontFamily":1,
       "textAlign":"left", "verticalAlign":"top", "baseline":10,
       "containerId":null,
-      "originalText":"Blue=tdd-agent  Teal=code-cleanup  Purple=css-refactor  Pink=component-refactor  Amber=performance-report  Orange=improve-client-performance  Dashed=feeds/agent-to-agent  ←·· reads all",
+      "originalText":"Blue=tdd-agent  Teal=code-cleanup  Purple=css-refactor  Pink=component-refactor  Red=npm-vulnerability-fix  Amber=performance-report  Orange=improve-client-performance  Dashed=feeds/agent-to-agent  ←·· reads all",
       "lineHeight":1.25 },
 
     { "id":"bg-compref", "type":"rectangle", "x":950, "y":185, "width":430, "height":110,
@@ -880,7 +880,22 @@
       "points":[[0,0],[365,250]], "lastCommittedPoint":null,
       "startBinding":{"elementId":"r-compref","focus":0.7,"gap":6},
       "endBinding":{"elementId":"r-docgen","focus":0,"gap":6},
-      "startArrowhead":null, "endArrowhead":"arrow" }
+      "startArrowhead":null, "endArrowhead":"arrow" },
+
+    { "id":"r-npmvuln", "type":"rectangle", "x":1270, "y":55, "width":250, "height":80,
+      "angle":0, "strokeColor":"#c92a2a", "backgroundColor":"#e03131", "fillStyle":"solid",
+      "strokeWidth":2, "strokeStyle":"solid", "roughness":0, "opacity":100,
+      "groupIds":[], "frameId":null, "roundness":{"type":3}, "seed":210, "version":1, "versionNonce":210,
+      "isDeleted":false, "boundElements":[{"type":"text","id":"t-npmvuln"}],
+      "updated":1716378120000, "link":null, "locked":false },
+    { "id":"t-npmvuln", "type":"text", "x":1270, "y":55, "width":250, "height":80,
+      "angle":0, "strokeColor":"#ffffff", "backgroundColor":"transparent", "fillStyle":"solid",
+      "strokeWidth":1, "strokeStyle":"solid", "roughness":0, "opacity":100,
+      "groupIds":[], "frameId":null, "roundness":null, "seed":211, "version":1, "versionNonce":211,
+      "isDeleted":false, "boundElements":null, "updated":1716378120000, "link":null, "locked":false,
+      "text":"npm-vulnerability-\nfix", "fontSize":15, "fontFamily":1,
+      "textAlign":"center", "verticalAlign":"middle", "baseline":13,
+      "containerId":"r-npmvuln", "originalText":"npm-vulnerability-\nfix", "lineHeight":1.25 }
 
   ],
   "appState": { "gridSize": null, "viewBackgroundColor": "#ffffff" },

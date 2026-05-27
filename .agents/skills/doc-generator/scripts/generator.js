@@ -265,7 +265,9 @@ function findApiRoutes(projectDir, framework) {
 
 function analyzeComponents(projectDir, cfg) {
   const componentDirs = ['src/components', 'components', 'src/ui', 'ui', 'src/features', 'src/app'].map(d => path.join(projectDir, d));
-  const allFiles = componentDirs.flatMap(d => findFiles(d, ['.tsx', '.jsx'], ['__tests__', 'test', 'stories']));
+  const allFiles = componentDirs
+    .flatMap(d => findFiles(d, ['.tsx', '.jsx'], ['__tests__', 'test', 'stories']))
+    .filter(f => !/\.(test|spec)\.(tsx|jsx)$/.test(f));
 
   if (allFiles.length === 0) return [];
 

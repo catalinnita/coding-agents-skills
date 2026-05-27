@@ -289,3 +289,4 @@ _docs/
 - **Private keys**: never write `.env` values into docs — keys only
 - **Large component library (50+ components)**: generate an index grouping by folder instead of one page per component
 - **`.d.ts` files**: skip for component extraction (declaration files are not components)
+- **Test/spec files**: skip `*.test.tsx`, `*.test.jsx`, `*.spec.tsx`, `*.spec.jsx` files — test files are not components even if they export a PascalCase identifier
